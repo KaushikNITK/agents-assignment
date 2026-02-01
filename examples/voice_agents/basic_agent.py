@@ -16,6 +16,7 @@ from livekit.agents import (
     metrics,
     room_io,
 )
+from livekit.agents.llm import function_tool
 from livekit.plugins import silero, deepgram, openai
 from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
@@ -43,7 +44,7 @@ class MyAgent(Agent):
     # agent is active
     @function_tool
     async def lookup_weather(
-        self, context: RunContext, location: str, latitude: str, longitude: str
+        self, location: str, latitude: str, longitude: str
     ):
         """Called when the user asks for weather related information.
         Ensure the user's location (city or region) is provided.
@@ -150,7 +151,7 @@ async def entrypoint(ctx: JobContext):
             if session.agent_state != "speaking":
                 continue
 
-            # F. The Logic Matrix
+            # The Logic Matrix
             words = text.split()
             remaining = [w for w in words if w not in config.IGNORE_WORDS]
 
